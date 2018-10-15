@@ -1,0 +1,27 @@
+# Creates aliases which change JAVA_HOME for each jvm installed on the system.
+# There are other tools which do this, in nicer ways but this is simple and it works!
+
+#!/usr/bin/env bash
+
+eval $(
+/usr/bin/env python3 <<EOF
+import plistlib
+import subprocess
+import sys
+
+def normalise_version(version):
+  as_num = float(version)
+  if as_num >= 11:
+    return str(int(as_num))
+  else:
+    return version[2:]
+
+plist_xml = subprocess.check_output(['/usr/libexec/java_home', '--xml'])
+plist_data = plistlib.loads(plist_xml)
+
+for jvm in plist_data:
+  version = normalise_version(jvm['JVMPlatformVersion'])
+  path = jvm['JVMHomePath']
+  print(f"alias j{version}='export JAVA_HOME={path}';")
+EOF
+)
