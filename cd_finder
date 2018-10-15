@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 # Changes to the directly of the most recently viewed finder window
 function cdf() {
-  finder_dir=$(
-    /usr/bin/env osascript <<EOF
-      tell application "Finder"
+  finder_dir=$(/usr/bin/env osascript <<-EOF
+    tell application "Finder"
       try
         set the_path to (folder of the front window as alias)
         on error
           set the_path to ("~/")
       end try
+
       POSIX path of the_path
-      end tell
-    EOF
+    end tell
+EOF
   )
-  echo $finder_dir
+  >&2 echo $(pwd)
   cd $finder_dir
 }
