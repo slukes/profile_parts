@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# Changes to the directly of the most recently viewed finder window
-function cdf() {
+# Performs directory operations based on the most recently opened finder window
+# pwdf can be used to compose various other functions
+
+function pwdf() {
   finder_dir=$(/usr/bin/env osascript <<-EOF
     tell application "Finder"
       try
@@ -13,6 +15,14 @@ function cdf() {
     end tell
 EOF
   )
+  echo $finder_dir
+}
+
+function cdf() {
+  cd $(pwdf)
   >&2 echo $(pwd)
-  cd $finder_dir
+}
+
+function ef(){
+  $EDITOR $(pwdf)
 }
