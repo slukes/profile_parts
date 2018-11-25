@@ -1,3 +1,4 @@
 alias ev="export EDITOR=vim"
 alias ea="export EDITOR=atom"
 alias ei="export EDITOR=idea"
+ev
